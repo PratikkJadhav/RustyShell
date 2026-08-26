@@ -17,9 +17,10 @@ fn main() {
 
         if input.trim().to_string() == "echo" {
             println!("echo : {}\n", input.trim());
-            continue
+        }else {
+            println!("{}: command not found", input.trim())
         }
-        println!("{}: command not found", input.trim())
+
     }
 
 

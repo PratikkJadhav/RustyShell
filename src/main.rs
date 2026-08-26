@@ -14,6 +14,11 @@ fn main() {
         if input.trim().to_string() == "exit" {
             break;
         }
+
+        if input.trim().to_string() == "echo" {
+            println!("echo : {}\n", input.trim())
+            continue;
+        }
         println!("{}: command not found", input.trim())
     }
 

@@ -9,7 +9,7 @@ fn main() {
     while input != "exit" {
         print!("$ ");
         io::stdout().flush().unwrap();
-        input_string.clear();
+        input.clear();
         io::stdin().read_line(&mut input).unwrap();
 
         println!("{}: command not found", input.trim())

@@ -16,7 +16,7 @@ fn main() {
         }
 
         if input.trim().to_string().starts_with("echo ") {
-            println!("{}", &input[5:]);
+            println!("{}", &input[5..]);
         }else if {
             println!("{}: command not found", input.trim())
         }

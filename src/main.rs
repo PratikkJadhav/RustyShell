@@ -6,12 +6,14 @@ fn main() {
 
     let mut input = String::new();
 
-    while input.trim().to_string() != "exit" {
+    loop {
         print!("$ ");
         io::stdout().flush().unwrap();
         input.clear();
         io::stdin().read_line(&mut input).unwrap();
-
+        if input.trim().to_string() == "exit" {
+            break;
+        }
         println!("{}: command not found", input.trim())
     }
 

@@ -9,7 +9,7 @@ fn main() {
     let mut input = String::new();
     while input != "x" {
         input.clear();
-        io::stddin().read_line(&mut input).unwrap();
+        io::stdin().read_line(&mut input).unwrap();
         println!("{}",input," Not found");
     }
 

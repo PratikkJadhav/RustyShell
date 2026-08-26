@@ -7,7 +7,11 @@ fn main() {
     io::stdout().flush().unwrap();
 
     let mut input = String::new();
-    io::stdin().read_line(&mut input).unwrap();
-    println!("{}: command not found", input.trim())
+    while true {
+        io::stdin().read_line(&mut input).unwrap();
+        input.clear();
+        println!("{}: command not found", input.trim())
+    }
+
 
 }

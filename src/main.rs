@@ -6,7 +6,7 @@ fn main() {
 
     let mut input = String::new();
 
-    while input.trim() != "exit" {
+    while input.trim().to_string() != "exit" {
         print!("$ ");
         io::stdout().flush().unwrap();
         input.clear();

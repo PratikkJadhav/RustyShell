@@ -10,7 +10,7 @@ fn main() {
     while input != "x" {
         input.clear();
         io::stdin().read_line(&mut input).unwrap();
-        println!("{}",input," Not found");
+        println!("{}",input," :command not found");
     }
 
 }

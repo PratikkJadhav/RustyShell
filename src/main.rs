@@ -11,15 +11,14 @@ fn main() {
         io::stdout().flush().unwrap();
         input.clear();
         io::stdin().read_line(&mut input).unwrap();
-        if input.trim().to_string() == "exit" {
-            break;
-        }
-
-        if input.trim().to_string().starts_with("echo ") {
-            println!("{}", &input[5..]);
-        }else{
-            println!("{}: command not found", input.trim().to_string())
-        }
+        command = input.trim().to_string();
+                if command == "exit" {
+                    break;
+                } else if command.starts_with("echo ") {
+                    println!("{}", &command[5..]);
+                } else {
+                    println!("{}: command not found", command);
+                }
 
     }
 

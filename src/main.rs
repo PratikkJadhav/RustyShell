@@ -1,5 +1,6 @@
 #[allow(unused_imports)]
 use std::io::{self, Write};
+use std::process::Command;
 use std::{env, fs, os::unix::fs::PermissionsExt, path::Path};
 
 fn main() {
@@ -23,7 +24,14 @@ fn main() {
                 exec(args);
             }
         } else {
-            println!("{}: command not found", cmd);
+            match Command::new(cmd).args(args.split_whitespace()).spawn() {
+                Ok(mut child) => {
+                    child.wait().unwrap();
+                }
+                Err(_) => {
+                    println!("{}: command not found", cmd);
+                }
+            }
         }
     }
 }

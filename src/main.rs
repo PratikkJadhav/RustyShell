@@ -1,3 +1,4 @@
+use std::env::current_dir;
 #[allow(unused_imports)]
 use std::io::{self, Write};
 use std::process::Command;
@@ -17,6 +18,9 @@ fn main() {
             break;
         } else if cmd == "echo" {
             println!("{args}");
+        } else if cmd == "pwd" {
+            let current_dir = env::current_dir().unwrap();
+            println!("{} hjello 1 2 3 check check check", current_dir.display());
         } else if cmd == "type" {
             if args == "echo" || args == "exit" || args == "type" {
                 println!("{} is a shell builtin", args);

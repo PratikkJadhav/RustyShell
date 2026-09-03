@@ -1,4 +1,4 @@
-use std::env::current_dir;
+use std::env::{current_dir, set_current_dir};
 #[allow(unused_imports)]
 use std::io::{self, Write};
 use std::process::Command;
@@ -16,11 +16,19 @@ fn main() {
         let args = parse.next().unwrap_or("").trim_start();
         if cmd == "exit" {
             break;
+        } else if cmd == "cd" {
+            if args == "~" {
+                if set_current_dir(env::var("HOME").unwrap()).is_err() {};
+            } else {
+                if set_current_dir(args).is_err() {
+                    println!("{}: No such file or directory", args);
+                };
+            }
         } else if cmd == "echo" {
             println!("{args}");
         } else if cmd == "pwd" {
             let current_dir = env::current_dir().unwrap();
-            println!("{} hjello 1 2 3 check check check", current_dir.display());
+            println!("{}", current_dir.display());
         } else if cmd == "type" {
             if args == "echo" || args == "exit" || args == "type" {
                 println!("{} is a shell builtin", args);

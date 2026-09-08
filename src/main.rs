@@ -12,10 +12,18 @@ fn main() {
         let mut command = String::new();
         io::stdin().read_line(&mut command).unwrap();
         command = command.trim().to_string();
-        let mut parse = command.splitn(2, char::is_whitespace);
-        // let cmd = parse.next().unwrap();
-        let args = parse.next().unwrap_or("").trim_start();
-        let cmd = arguements(args)[0];
+
+        if command.is_empty() {
+            continue;
+        }
+        let parsed_args = arguements(&command);
+        if parsed_args.is_empty() {
+            continue;
+        }
+
+        let cmd = &parsed_args[0];
+        let args_vec = &parsed_args[1..];
+        let args = args_vec.join(" ");
         if cmd == "exit" {
             break;
         } else if cmd == "cd" {

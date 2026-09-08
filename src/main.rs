@@ -73,7 +73,7 @@ fn arguements(args: &str) -> Vec<String> {
     let mut v = Vec::new();
     let mut in_double_quotes = false;
     let mut in_single_quotes: bool = false;
-    let mut is_slash: bool = false
+    let mut is_slash: bool = false;
     let mut current_word = String::new();
 
     for i in args.chars() {

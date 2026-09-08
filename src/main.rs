@@ -1,8 +1,7 @@
-use std::env::{current_dir, set_current_dir};
+use std::env::set_current_dir;
 #[allow(unused_imports)]
 use std::io::{self, Write};
 use std::process::Command;
-use std::vec;
 use std::{env, fs, os::unix::fs::PermissionsExt, path::Path};
 
 fn main() {

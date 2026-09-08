@@ -36,8 +36,7 @@ fn main() {
                 };
             }
         } else if cmd == "echo" {
-            let parsed_args = arguements(&args);
-            println!("{}", parsed_args.join(" "));
+            println!("{}", args);
         } else if cmd == "pwd" {
             let current_dir = env::current_dir().unwrap();
             println!("{}", current_dir.display());
@@ -49,7 +48,7 @@ fn main() {
             }
         } else {
             let parsed_args = arguements(&args);
-            match Command::new(cmd).args(parsed_args).spawn() {
+            match Command::new(cmd).args(args_vec).spawn() {
                 Ok(mut child) => {
                     child.wait().unwrap();
                 }

@@ -24,6 +24,7 @@ fn main() {
         let cmd = &parsed_args[0];
         let args_vec = &parsed_args[1..];
         let args = args_vec.join(" ");
+
         if cmd == "exit" {
             break;
         } else if cmd == "cd" {
@@ -35,7 +36,7 @@ fn main() {
                 };
             }
         } else if cmd == "echo" {
-            let parsed_args = arguements(args);
+            let parsed_args = arguements(&args);
             println!("{}", parsed_args.join(" "));
         } else if cmd == "pwd" {
             let current_dir = env::current_dir().unwrap();
@@ -44,10 +45,10 @@ fn main() {
             if args == "echo" || args == "pwd" || args == "cd" || args == "exit" || args == "type" {
                 println!("{} is a shell builtin", args);
             } else {
-                exec(args);
+                exec(&args);
             }
         } else {
-            let parsed_args = arguements(args);
+            let parsed_args = arguements(&args);
             match Command::new(cmd).args(parsed_args).spawn() {
                 Ok(mut child) => {
                     child.wait().unwrap();

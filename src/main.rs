@@ -30,7 +30,7 @@ fn main() {
             if args == "~" {
                 if set_current_dir(env::var("HOME").unwrap()).is_err() {};
             } else {
-                if set_current_dir(args).is_err() {
+                if set_current_dir(&args).is_err() {
                     println!("{}: No such file or directory", args);
                 };
             }

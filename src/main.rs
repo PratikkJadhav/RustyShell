@@ -25,7 +25,6 @@ fn main() {
                 };
             }
         } else if cmd == "echo" {
-            if
             println!("{args}");
         } else if cmd == "pwd" {
             let current_dir = env::current_dir().unwrap();

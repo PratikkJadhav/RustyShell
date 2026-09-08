@@ -2,6 +2,7 @@ use std::env::{current_dir, set_current_dir};
 #[allow(unused_imports)]
 use std::io::{self, Write};
 use std::process::Command;
+use std::vec;
 use std::{env, fs, os::unix::fs::PermissionsExt, path::Path};
 
 fn main() {
@@ -25,6 +26,7 @@ fn main() {
                 };
             }
         } else if cmd == "echo" {
+            if
             println!("{args}");
         } else if cmd == "pwd" {
             let current_dir = env::current_dir().unwrap();
@@ -64,4 +66,15 @@ fn exec(args: &str) {
     }
 
     println!("{}: not found", args);
+}
+
+fn arguements(args : &str) -> vec{
+    let mut v = Vec::new();
+    let len = args.len();
+
+    for i in args.chars() {
+        v.push(i);
+    }
+
+    v
 }

@@ -73,9 +73,30 @@ fn arguements(args: &str) -> Vec<String> {
     let mut v = Vec::new();
     let mut in_double_quotes = false;
     let mut in_single_quotes: bool = false;
+    let mut is_slash: bool = false
     let mut current_word = String::new();
 
     for i in args.chars() {
+
+        if is_slash {
+            if in_double_quotes {
+                if i == '"' || i == '\\' || i == '$' {
+                    current_word.push(i);
+                } else {
+                    current_word.push('\\');
+                    current_word.push(i);    // keep the character
+                }
+            }else {
+                current_word.push(i);
+            }
+            is_escaped = false;
+            continue;
+        }
+
+        if i == '\\' && !in_single_quotes {
+            is_escaped = true;
+            continue;
+        }
         if i == '"' && !in_single_quotes {
             in_double_quotes = !in_double_quotes;
             continue;

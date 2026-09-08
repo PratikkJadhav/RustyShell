@@ -26,8 +26,8 @@ fn main() {
                 };
             }
         } else if cmd == "echo" {
-            if
-            println!("{args}");
+            let parsed_args = arguements(args);
+            println!("{}", parsed_args.join(" "));
         } else if cmd == "pwd" {
             let current_dir = env::current_dir().unwrap();
             println!("{}", current_dir.display());
@@ -38,7 +38,8 @@ fn main() {
                 exec(args);
             }
         } else {
-            match Command::new(cmd).args(args.split_whitespace()).spawn() {
+            let parsed_args = arguements(args);
+            match Command::new(cmd).args(parsed_args).spawn() {
                 Ok(mut child) => {
                     child.wait().unwrap();
                 }
@@ -68,12 +69,36 @@ fn exec(args: &str) {
     println!("{}: not found", args);
 }
 
-fn arguements(args : &str) -> vec{
+fn arguements(args: &str) -> Vec<String> {
     let mut v = Vec::new();
-    let len = args.len();
+    let mut in_double_quotes = false;
+    let mut in_single_quotes: bool = false;
+    let mut current_word = String::new();
 
     for i in args.chars() {
-        v.push(i);
+        if i == '"' && !in_single_quotes {
+            in_double_quotes = !in_double_quotes;
+            continue;
+        }
+
+        if i == '\'' && !in_double_quotes {
+            in_single_quotes = !in_single_quotes;
+            continue;
+        }
+
+        if i == ' ' {
+            if !in_double_quotes && !in_single_quotes {
+                if !current_word.is_empty() {
+                    v.push(current_word.clone());
+                    current_word.clear();
+                }
+                continue;
+            }
+        }
+        current_word.push(i);
+    }
+    if !current_word.is_empty() {
+        v.push(current_word);
     }
 
     v

@@ -93,7 +93,7 @@ fn arguements(args: &str) -> Vec<String> {
         }
 
         if i == '\\' && !in_single_quotes {
-            is_escaped = true;
+            is_slash = true;
             continue;
         }
         if i == '"' && !in_single_quotes {

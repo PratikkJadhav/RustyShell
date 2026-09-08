@@ -13,8 +13,9 @@ fn main() {
         io::stdin().read_line(&mut command).unwrap();
         command = command.trim().to_string();
         let mut parse = command.splitn(2, char::is_whitespace);
-        let cmd = parse.next().unwrap();
+        // let cmd = parse.next().unwrap();
         let args = parse.next().unwrap_or("").trim_start();
+        let cmd = arguements(args)[0];
         if cmd == "exit" {
             break;
         } else if cmd == "cd" {

@@ -77,19 +77,18 @@ fn arguements(args: &str) -> Vec<String> {
     let mut current_word = String::new();
 
     for i in args.chars() {
-
         if is_slash {
             if in_double_quotes {
                 if i == '"' || i == '\\' || i == '$' {
                     current_word.push(i);
                 } else {
                     current_word.push('\\');
-                    current_word.push(i);    // keep the character
+                    current_word.push(i);
                 }
-            }else {
+            } else {
                 current_word.push(i);
             }
-            is_escaped = false;
+            is_slash = false;
             continue;
         }
 

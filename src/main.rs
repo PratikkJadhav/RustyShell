@@ -25,12 +25,13 @@ fn main() {
                 };
             }
         } else if cmd == "echo" {
+            if
             println!("{args}");
         } else if cmd == "pwd" {
             let current_dir = env::current_dir().unwrap();
             println!("{}", current_dir.display());
         } else if cmd == "type" {
-            if args == "echo" || args == "exit" || args == "type" {
+            if args == "echo" || args == "pwd" || args == "cd" || args == "exit" || args == "type" {
                 println!("{} is a shell builtin", args);
             } else {
                 exec(args);

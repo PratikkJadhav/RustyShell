@@ -52,7 +52,7 @@ fn main() {
         } else if cmd == "pwd" {
             let current_dir = env::current_dir().unwrap();
             if redirection {
-                writeln!(file.as_mut().unwrap(), "{}", current_dir).unwrap();
+                writeln!(file.as_mut().unwrap(), "{}", current_dir.display()).unwrap();
             } else {
                 println!("{}", current_dir.display());
             }
@@ -69,17 +69,10 @@ fn main() {
             //         writeln!(file.as_mut().unwrap(), exec(&args));
             //     }
             // }
-            if {
-                if args == "echo"
-                    || args == "pwd"
-                    || args == "cd"
-                    || args == "exit"
-                    || args == "type"
-                {
-                    println!("{} is a shell builtin", args);
-                } else {
-                    exec(&args);
-                }
+            if args == "echo" || args == "pwd" || args == "cd" || args == "exit" || args == "type" {
+                println!("{} is a shell builtin", args);
+            } else {
+                exec(&args);
             }
         } else {
             let clean_args =

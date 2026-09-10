@@ -57,18 +57,6 @@ fn main() {
                 println!("{}", current_dir.display());
             }
         } else if cmd == "type" {
-            // if redirection {
-            //     if args == "echo"
-            //         || args == "pwd"
-            //         || args == "cd"
-            //         || args == "exit"
-            //         || args == "type"
-            //     {
-            //         writeln!(file.as_mut().unwrap(), "{} is a shell builtin", args);
-            //     } else {
-            //         writeln!(file.as_mut().unwrap(), exec(&args));
-            //     }
-            // }
             if args == "echo" || args == "pwd" || args == "cd" || args == "exit" || args == "type" {
                 println!("{} is a shell builtin", args);
             } else {

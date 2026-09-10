@@ -45,30 +45,31 @@ fn main() {
             }
         } else if cmd == "echo" {
             if redirection {
-                writeln!(file, args).unwrap();
+                writeln!(file.as_mut().unwrap(), "{}", args).unwrap();
             } else {
                 println!("{}", args);
             }
         } else if cmd == "pwd" {
             let current_dir = env::current_dir().unwrap();
             if redirection {
-                writeln!(file, current_dir).unwrap();
+                writeln!(file.as_mut().unwrap(), "{}", current_dir).unwrap();
             } else {
                 println!("{}", current_dir.display());
             }
         } else if cmd == "type" {
-            if redirection {
-                if args == "echo"
-                    || args == "pwd"
-                    || args == "cd"
-                    || args == "exit"
-                    || args == "type"
-                {
-                    writeln!("{} is a shell builtin", args);
-                } else {
-                    writeln!(file, exec(&args));
-                }
-            } else {
+            // if redirection {
+            //     if args == "echo"
+            //         || args == "pwd"
+            //         || args == "cd"
+            //         || args == "exit"
+            //         || args == "type"
+            //     {
+            //         writeln!(file.as_mut().unwrap(), "{} is a shell builtin", args);
+            //     } else {
+            //         writeln!(file.as_mut().unwrap(), exec(&args));
+            //     }
+            // }
+            if {
                 if args == "echo"
                     || args == "pwd"
                     || args == "cd"

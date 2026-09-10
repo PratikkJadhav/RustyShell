@@ -22,7 +22,16 @@ fn main() {
 
         let cmd = &parsed_args[0];
         let args_vec = &parsed_args[1..];
-        let args = args_vec.join(" ");
+        let mut args = args_vec.join(" ");
+        let mut redirection = false;
+        let mut file = None;
+
+        if let Some(index) = args_vec.iter().position(|args| args == ">" || args == "1>") {
+            redirection = true;
+            let filename = &args_vec[index + 1];
+            file = Some(std::fs::File::create(filename).unwrap());
+            args = args_vec[..index].join(" ");
+        }
 
         if cmd == "exit" {
             break;
@@ -35,17 +44,56 @@ fn main() {
                 };
             }
         } else if cmd == "echo" {
-            println!("{}", args);
+            if redirection {
+                writeln!(file, args).unwrap();
+            } else {
+                println!("{}", args);
+            }
         } else if cmd == "pwd" {
             let current_dir = env::current_dir().unwrap();
-            println!("{}", current_dir.display());
-        } else if cmd == "type" {
-            if args == "echo" || args == "pwd" || args == "cd" || args == "exit" || args == "type" {
-                println!("{} is a shell builtin", args);
+            if redirection {
+                writeln!(file, current_dir).unwrap();
             } else {
-                exec(&args);
+                println!("{}", current_dir.display());
+            }
+        } else if cmd == "type" {
+            if redirection {
+                if args == "echo"
+                    || args == "pwd"
+                    || args == "cd"
+                    || args == "exit"
+                    || args == "type"
+                {
+                    writeln!("{} is a shell builtin", args);
+                } else {
+                    writeln!(file, exec(&args));
+                }
+            } else {
+                if args == "echo"
+                    || args == "pwd"
+                    || args == "cd"
+                    || args == "exit"
+                    || args == "type"
+                {
+                    println!("{} is a shell builtin", args);
+                } else {
+                    exec(&args);
+                }
             }
         } else {
+            let clean_args =
+                if let Some(index) = args_vec.iter().position(|a| a == ">" || a == "1>") {
+                    &args_vec[..index]
+                } else {
+                    args_vec
+                };
+
+            let mut command_builder = Command::new(cmd);
+            command_builder.args(clean_args);
+
+            if let Some(out_file) = file {
+                command_builder.stdout(std::process::Stdio::from(out_file));
+            }
             match Command::new(cmd).args(args_vec).spawn() {
                 Ok(mut child) => {
                     child.wait().unwrap();

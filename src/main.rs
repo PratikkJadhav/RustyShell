@@ -88,7 +88,7 @@ fn main() {
             if let Some(out_file) = file {
                 command_builder.stdout(std::process::Stdio::from(out_file));
             }
-            match Command::new(cmd).args(args_vec).spawn() {
+            match command_builder.spawn() {
                 Ok(mut child) => {
                     child.wait().unwrap();
                 }

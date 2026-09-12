@@ -28,11 +28,16 @@ fn main() {
         let mut redir = None;
 
         if let Some(index) = args_vec.iter().position(|args| {
-            args == ">" || args == "1>" || args == "2>" || args == ">>" || args == "1>>"
+            args == ">"
+                || args == "1>"
+                || args == "2>"
+                || args == ">>"
+                || args == "1>>"
+                || args == "2>>"
         }) {
             let filename = &args_vec[index + 1];
 
-            if args_vec[index] == ">>" || args_vec[index] == "1>>" {
+            if args_vec[index] == ">>" || args_vec[index] == "1>>" || args_vec[index] == "2>>" {
                 file = Some(
                     OpenOptions::new()
                         .create(true)
@@ -40,7 +45,12 @@ fn main() {
                         .open(filename)
                         .unwrap(),
                 );
-                redir = Some(1);
+
+                if args_vec[index] == "2>>" {
+                    redir = Some(2);
+                } else {
+                    redir = Some(1);
+                }
             } else {
                 if args_vec[index] == "2>" {
                     redir = Some(2);
@@ -83,10 +93,9 @@ fn main() {
                 exec(&args);
             }
         } else {
-            let clean_args = if let Some(index) = args_vec
-                .iter()
-                .position(|a| a == ">" || a == "1>" || a == "2>" || a == ">>" || a == "1>>")
-            {
+            let clean_args = if let Some(index) = args_vec.iter().position(|a| {
+                a == ">" || a == "1>" || a == "2>" || a == ">>" || a == "1>>" || a == "2>>"
+            }) {
                 &args_vec[..index]
             } else {
                 args_vec

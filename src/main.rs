@@ -23,11 +23,19 @@ fn main() {
         let cmd = &parsed_args[0];
         let args_vec = &parsed_args[1..];
         let mut args = args_vec.join(" ");
-        let mut redirection = false;
         let mut file = None;
+        let mut redir = None;
 
-        if let Some(index) = args_vec.iter().position(|args| args == ">" || args == "1>") {
-            redirection = true;
+        if let Some(index) = args_vec
+            .iter()
+            .position(|args| args == ">" || args == "1>" || a == "2>")
+        {
+            if args_vec[index] == "2>" {
+                redir = Some(2);
+            } else {
+                redir = Some(1);
+            }
+
             let filename = &args_vec[index + 1];
             file = Some(std::fs::File::create(filename).unwrap());
             args = args_vec[..index].join(" ");
@@ -44,14 +52,14 @@ fn main() {
                 };
             }
         } else if cmd == "echo" {
-            if redirection {
+            if redir == Some(1) {
                 writeln!(file.as_mut().unwrap(), "{}", args).unwrap();
             } else {
                 println!("{}", args);
             }
         } else if cmd == "pwd" {
             let current_dir = env::current_dir().unwrap();
-            if redirection {
+            if redir == Some(1) {
                 writeln!(file.as_mut().unwrap(), "{}", current_dir.display()).unwrap();
             } else {
                 println!("{}", current_dir.display());
@@ -74,7 +82,11 @@ fn main() {
             command_builder.args(clean_args);
 
             if let Some(out_file) = file {
-                command_builder.stdout(std::process::Stdio::from(out_file));
+                if redir == Some(1) {
+                    command_builder.stdout(std::process::Stdio::from(out_file));
+                } else {
+                    command_builder.stderr(std::process::Stdio::from(out_file));
+                }
             }
             match command_builder.spawn() {
                 Ok(mut child) => {

@@ -28,7 +28,7 @@ fn main() {
 
         if let Some(index) = args_vec
             .iter()
-            .position(|args| args == ">" || args == "1>" || a == "2>")
+            .position(|args| args == ">" || args == "1>" || args == "2>")
         {
             if args_vec[index] == "2>" {
                 redir = Some(2);

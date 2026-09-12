@@ -33,11 +33,13 @@ fn main() {
             let filename = &args_vec[index + 1];
 
             if args_vec[index] == ">>" || args_vec[index] == "1>>" {
-                let file = OpenOptions::new()
-                    .create(true)
-                    .append(true)
-                    .open(filename)
-                    .unwrap();
+                file = Some(
+                    OpenOptions::new()
+                        .create(true)
+                        .append(true)
+                        .open(filename)
+                        .unwrap(),
+                );
                 redir = Some(1);
             } else {
                 if args_vec[index] == "2>" {

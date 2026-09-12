@@ -71,12 +71,14 @@ fn main() {
                 exec(&args);
             }
         } else {
-            let clean_args =
-                if let Some(index) = args_vec.iter().position(|a| a == ">" || a == "1>") {
-                    &args_vec[..index]
-                } else {
-                    args_vec
-                };
+            let clean_args = if let Some(index) = args_vec
+                .iter()
+                .position(|a| a == ">" || a == "1>" || a == "2>")
+            {
+                &args_vec[..index]
+            } else {
+                args_vec
+            };
 
             let mut command_builder = Command::new(cmd);
             command_builder.args(clean_args);

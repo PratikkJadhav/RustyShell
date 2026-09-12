@@ -1,4 +1,5 @@
 use std::env::set_current_dir;
+use std::fs::OpenOptions;
 #[allow(unused_imports)]
 use std::io::{self, Write};
 use std::process::Command;
@@ -26,18 +27,27 @@ fn main() {
         let mut file = None;
         let mut redir = None;
 
-        if let Some(index) = args_vec
-            .iter()
-            .position(|args| args == ">" || args == "1>" || args == "2>")
-        {
-            if args_vec[index] == "2>" {
-                redir = Some(2);
-            } else {
+        if let Some(index) = args_vec.iter().position(|args| {
+            args == ">" || args == "1>" || args == "2>" || args == ">>" || args == "1>>"
+        }) {
+            let filename = &args_vec[index + 1];
+
+            if args_vec[index] == ">>" || args_vec[index] == "1>>" {
+                let file = OpenOptions::new()
+                    .create(true)
+                    .append(true)
+                    .open(filename)
+                    .unwrap();
                 redir = Some(1);
+            } else {
+                if args_vec[index] == "2>" {
+                    redir = Some(2);
+                } else {
+                    redir = Some(1);
+                }
+                file = Some(std::fs::File::create(filename).unwrap());
             }
 
-            let filename = &args_vec[index + 1];
-            file = Some(std::fs::File::create(filename).unwrap());
             args = args_vec[..index].join(" ");
         }
 
@@ -73,7 +83,7 @@ fn main() {
         } else {
             let clean_args = if let Some(index) = args_vec
                 .iter()
-                .position(|a| a == ">" || a == "1>" || a == "2>")
+                .position(|a| a == ">" || a == "1>" || a == "2>" || a == ">>" || a == "1>>")
             {
                 &args_vec[..index]
             } else {

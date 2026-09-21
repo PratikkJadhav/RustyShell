@@ -94,7 +94,7 @@ fn main() {
                 || args == "cd"
                 || args == "exit"
                 || args == "type"
-                || args == "job"
+                || args == "jobs"
             {
                 println!("{} is a shell builtin", args);
             } else {

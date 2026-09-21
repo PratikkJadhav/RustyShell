@@ -109,8 +109,19 @@ fn main() {
                 args_vec
             };
 
+            let mut is_background = false;
+            let mut final_args = clean_args;
+
+            if let Some(last) = final_args.last() {
+                if *last == "&" {
+                    is_background = true;
+
+                    final_args = &final_args[..final_args.len() - 1];
+                }
+            }
+
             let mut command_builder = Command::new(cmd);
-            command_builder.args(clean_args);
+            command_builder.args(final_args);
 
             if let Some(out_file) = file {
                 if redir == Some(1) {
@@ -121,7 +132,11 @@ fn main() {
             }
             match command_builder.spawn() {
                 Ok(mut child) => {
-                    child.wait().unwrap();
+                    if is_background {
+                        println!("[1] {}", child.id());
+                    } else {
+                        child.wait().unwrap();
+                    }
                 }
                 Err(_) => {
                     println!("{}: command not found", cmd);

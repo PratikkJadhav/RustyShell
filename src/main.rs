@@ -65,7 +65,7 @@ fn main() {
 
         if cmd == "exit" {
             break;
-        } else if cmd == "job" {
+        } else if cmd == "jobs" {
             continue;
         } else if cmd == "cd" {
             if args == "~" {

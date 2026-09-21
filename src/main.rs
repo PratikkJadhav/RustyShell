@@ -65,6 +65,8 @@ fn main() {
 
         if cmd == "exit" {
             break;
+        } else if cmd == "job" {
+            continue;
         } else if cmd == "cd" {
             if args == "~" {
                 if set_current_dir(env::var("HOME").unwrap()).is_err() {};

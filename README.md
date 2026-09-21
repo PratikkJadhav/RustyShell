@@ -1,35 +1,56 @@
-[![progress-banner](https://backend.codecrafters.io/progress/shell/ce3a519f-6567-4c39-9982-55cda79bc56c)](https://app.codecrafters.io/users/PratikkJadhav?r=2qF)
 
-This is a starting point for Rust solutions to the
-["Build Your Own Shell" Challenge](https://app.codecrafters.io/courses/shell/overview).
+---
 
-In this challenge, you'll build your own POSIX compliant shell that's capable of
-interpreting shell commands, running external programs and builtin commands like
-cd, pwd, echo and more. Along the way, you'll learn about shell command parsing,
-REPLs, builtin commands, and more.
+# Custom Rust Shell ( CodeCrafters ) 
 
-**Note**: If you're viewing this repo on GitHub, head over to
-[codecrafters.io](https://codecrafters.io) to try the challenge.
+A lightweight, POSIX-style shell built entirely from scratch in Rust. This project was developed to explore low-level Linux systems engineering concepts, focusing heavily on process lifecycle management, file descriptor manipulation, and I/O stream routing.
 
-# Passing the first stage
+## Features
 
-The entry point for your `shell` implementation is in `src/main.rs`. Study and
-uncomment the relevant code, then run the command below to execute the tests on
-our servers:
+* **Command Execution:** Dynamically resolves and spawns external binaries located within the system's `$PATH`.
+* **Robust Argument Parsing:** Custom tokenizer that correctly handles single quotes (`'`), double quotes (`"`), and backslash escapes (`\`) to process arguments containing spaces and special characters.
+* **I/O Redirection:** Directly manipulates OS file descriptors to route streams to files, completely bypassing the terminal window.
+* Standard Output Redirection (`>`, `1>`)
+* Standard Error Redirection (`2>`)
+* Append Mode (`>>`, `1>>`)
 
-```sh
-codecrafters submit
+
+* **Asynchronous Background Jobs:** Intercepts the `&` operator to decouple child processes from the main shell thread, allowing programs to run in the background without blocking the REPL loop.
+* **Core Built-ins:**
+* `cd`: Directory navigation (supports absolute/relative paths and `~` for `$HOME`).
+* `pwd`: Prints the current working directory.
+* `echo`: Standard output printing.
+* `type`: Identifies whether a command is a shell built-in or resolves to an external binary.
+* `exit`: Graceful termination.
+
+
+
+## Architecture
+
+This shell relies strictly on the Rust Standard Library (`std`), avoiding heavy external dependencies to directly interface with Unix mechanics:
+
+* `std::process::Command`: Used as a builder pattern to configure environment paths and arguments before spawning child processes.
+* `std::process::Stdio` & `std::fs::OpenOptions`: Used to hijack standard output and standard error streams, converting raw file handles into OS-level standard I/O adapters.
+* `std::os::unix::fs::PermissionsExt`: Used to verify the executable bit (`0o111`) on binaries resolved during `$PATH` traversal.
+
+## Getting Started
+
+Ensure you have Rust and Cargo installed, then clone the repository and run:
+
+```bash
+cargo run
+
 ```
 
-Time to move on to the next stage!
+Once inside the shell, you can execute standard Unix commands and combine them with the implemented features:
 
-# Stage 2 & beyond
+```bash
+$ ls -l /tmp > output.txt
+$ echo "Error log" 2> errors.txt
+$ sleep 10 &
+[1] 84470
+$ 
 
-Note: This section is for stages 2 and beyond.
+```
 
-1. Ensure you have `cargo (1.96)` installed locally
-1. Run `./your_program.sh` to run your program, which is implemented in
-   `src/main.rs`. This command compiles your Rust project, so it might be slow
-   the first time you run it. Subsequent runs will be fast.
-1. Run `codecrafters submit` to submit your solution to CodeCrafters. Test
-   output will be streamed to your terminal.
+---

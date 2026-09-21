@@ -87,7 +87,13 @@ fn main() {
                 println!("{}", current_dir.display());
             }
         } else if cmd == "type" {
-            if args == "echo" || args == "pwd" || args == "cd" || args == "exit" || args == "type" {
+            if args == "echo"
+                || args == "pwd"
+                || args == "cd"
+                || args == "exit"
+                || args == "type"
+                || args == "job"
+            {
                 println!("{} is a shell builtin", args);
             } else {
                 exec(&args);
